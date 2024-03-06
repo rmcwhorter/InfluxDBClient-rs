@@ -147,6 +147,7 @@ impl Client {
         
 
         let fut = if let Some(ref token) = self.jwt_token {
+            println!("IN WRITE POINTS, WITH A TOKEN...");
             self.client.post(url).body(line).bearer_auth(token).send()
             //builder = builder.bearer_auth(token);
         } else {
