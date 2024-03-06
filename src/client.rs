@@ -144,7 +144,16 @@ impl Client {
         }
 
         let url = self.build_url("write", Some(param));
-        let fut = self.client.post(url).body(line).send();
+        
+
+        let fut = if let Some(ref token) = self.jwt_token {
+            self.client.post(url).body(line).bearer_auth(token).send()
+            //builder = builder.bearer_auth(token);
+        } else {
+            self.client.post(url).body(line).send()
+        };
+
+        //let fut = self.client.post(url).body(line).send();
 
         async move {
             let res = fut.await?;
